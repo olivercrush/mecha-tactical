@@ -14,7 +14,7 @@ public class Map : MonoBehaviour
         {
             for (int x = 0; x < _mapData.GetLength(1); x++)
             {
-                Instantiate(ColorDebugPrefabFactory.GetMapCell(_mapData[y, x]), new Vector3(x, y, 1), Quaternion.identity, transform);
+                Instantiate(ColorDebugPrefabFactory.GetMapCell(_mapData[y, x]), new Vector3(transform.position.x + x, transform.position.y + (_mapData.GetLength(0) - y - 1), 1), Quaternion.identity, transform);
             }
         }
     }
