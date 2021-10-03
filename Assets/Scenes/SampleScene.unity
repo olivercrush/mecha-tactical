@@ -249,3 +249,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0844ecfcbc859754094878460b0b8788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mapViewSize: 10

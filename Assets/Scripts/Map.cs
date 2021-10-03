@@ -5,7 +5,7 @@ using UnityEngine;
 public class Map : MonoBehaviour
 {
     public int _mapViewSize = 10;
-    private int _mapViewFocus;
+    private (int, int) _mapViewFocus;
 
     private int[,] _mapData;
     private GameObject[,] _mapCells;
@@ -17,15 +17,31 @@ public class Map : MonoBehaviour
 
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            SetMapViewFocus((_mapViewFocus.Item1 - 1, _mapViewFocus.Item2));
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            SetMapViewFocus((_mapViewFocus.Item1 + 1, _mapViewFocus.Item2));
+        }
+        else if (Input.GetKeyDown(KeyCode.W))
+        {
+            SetMapViewFocus((_mapViewFocus.Item1, _mapViewFocus.Item2 - 1));
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            SetMapViewFocus((_mapViewFocus.Item1, _mapViewFocus.Item2 + 1));
+        }
     }
 
     private void LoadLevel(string name)
     {
         _mapData = FileUtils.ReadLevelFromFile(name);
         _mapCells = new GameObject[_mapData.GetLength(0), _mapData.GetLength(1)];
+        _mapViewFocus = (10, 10);
 
-        DisplayMap();
+        SetMapViewFocus((5, 5));
     }
 
     private void DisplayMap()
@@ -35,14 +51,31 @@ public class Map : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        for (int y = 0; y < _mapData.GetLength(0); y++)
+        int displayY = 0;
+        for (int y = _mapViewFocus.Item2 - _mapViewSize / 2; y < _mapViewFocus.Item2 + _mapViewSize / 2; y++)
         {
-            for (int x = 0; x < _mapData.GetLength(1); x++)
+            int displayX = 0;
+            for (int x = _mapViewFocus.Item1 - _mapViewSize / 2; x < _mapViewFocus.Item1 + _mapViewSize / 2; x++)
             {
-                GameObject cell = Instantiate(ColorDebugPrefabFactory.GetMapCell(_mapData[y, x]), new Vector3(transform.position.x + x, transform.position.y + (_mapData.GetLength(0) - y - 1), 1), Quaternion.identity, transform);
+                GameObject cell = Instantiate(ColorDebugPrefabFactory.GetMapCell(_mapData[y, x]), new Vector3(transform.position.x + displayX, transform.position.y + _mapViewSize - displayY, 1), Quaternion.identity, transform);
                 cell.name = x + ":" + y + " - " + _mapData[y, x];
                 _mapCells[y, x] = cell;
+                displayX++;
             }
+            displayY++;
+        }
+    }
+
+    private void SetMapViewFocus((int, int) mapViewFocus)
+    {
+        if (mapViewFocus.Item1 - _mapViewSize / 2 < 0) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (west) -> " + mapViewFocus); }
+        else if (mapViewFocus.Item1 + _mapViewSize / 2 > _mapData.GetLength(1)) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (east) -> " + mapViewFocus); }
+        else if (mapViewFocus.Item2 - _mapViewSize / 2 < 0) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (north) -> " + mapViewFocus); }
+        else if (mapViewFocus.Item2 + _mapViewSize / 2 > _mapData.GetLength(0)) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (south) -> " + mapViewFocus); }
+        else 
+        { 
+            _mapViewFocus = mapViewFocus;
+            DisplayMap();
         }
     }
 }
