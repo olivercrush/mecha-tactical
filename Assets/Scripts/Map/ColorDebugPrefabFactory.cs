@@ -12,19 +12,19 @@ public static class ColorDebugPrefabFactory
         switch (type)
         {
             case 0:
-                cellType = new CellPlain();
+                cellType = ScriptableObject.CreateInstance<CellPlain>();
                 break;
 
             case 2:
-                cellType = new CellForest();
+                cellType = ScriptableObject.CreateInstance<CellForest>();
                 break;
 
             case 3:
-                cellType = new CellWater();
+                cellType = ScriptableObject.CreateInstance<CellWater>();
                 break;
 
             default:
-                cellType = new CellPlain();
+                cellType = ScriptableObject.CreateInstance<CellPlain>();
                 break;
         }
 

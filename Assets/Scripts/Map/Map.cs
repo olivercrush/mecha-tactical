@@ -6,8 +6,8 @@ public class Map : MonoBehaviour
 {
     public int _mapViewSize = 10;
     public float _mapSpeed = 0.5f;
-    private (int, int) _mapViewFocus;
-    private (int, int) _mapMovement;
+    private Vector2 _mapViewFocus;
+    private Vector2 _mapMovement;
 
     private int[,] _mapData;
     private GameObject[,] _mapCells;
@@ -15,7 +15,7 @@ public class Map : MonoBehaviour
     void Start()
     {
         LoadLevel("000");
-        _mapMovement = (0, 0);
+        _mapMovement = new Vector2(0, 0);
     }
 
     void Update()
@@ -25,42 +25,42 @@ public class Map : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             CancelInvoke("MoveMap");
-            _mapMovement = (-1, 0);
+            _mapMovement = new Vector2(-1, 0);
             InvokeRepeating("MoveMap", 0.0f, _mapSpeed);
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
             CancelInvoke("MoveMap");
-            _mapMovement = (1, 0);
+            _mapMovement = new Vector2(1, 0);
             InvokeRepeating("MoveMap", 0.0f, _mapSpeed);
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
             CancelInvoke("MoveMap");
-            _mapMovement = (0, -1);
+            _mapMovement = new Vector2(0, -1);
             InvokeRepeating("MoveMap", 0.0f, _mapSpeed);
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
             CancelInvoke("MoveMap");
-            _mapMovement = (0, 1);
+            _mapMovement = new Vector2(0, 1);
             InvokeRepeating("MoveMap", 0.0f, _mapSpeed);
         }
     }
 
     private void MoveMap()
     {
-        SetMapViewFocus((_mapViewFocus.Item1 + _mapMovement.Item1, _mapViewFocus.Item2 + _mapMovement.Item2));
+        SetMapViewFocus(_mapViewFocus + _mapMovement);
     }
 
     private void LoadLevel(string name)
     {
         _mapData = FileUtils.ReadLevelFromFile(name);
         _mapCells = new GameObject[_mapData.GetLength(0), _mapData.GetLength(1)];
-        _mapViewFocus = (10, 10);
+        _mapViewFocus = new Vector2(10, 10);
 
-        SetMapViewFocus((5, 5));
+        SetMapViewFocus(new Vector2(5, 5));
     }
 
     private void DisplayMap()
@@ -71,10 +71,10 @@ public class Map : MonoBehaviour
         }
 
         int displayY = 0;
-        for (int y = _mapViewFocus.Item2 - _mapViewSize / 2; y < _mapViewFocus.Item2 + _mapViewSize / 2; y++)
+        for (int y = (int) _mapViewFocus.y - _mapViewSize / 2; y < _mapViewFocus.y + _mapViewSize / 2; y++)
         {
             int displayX = 0;
-            for (int x = _mapViewFocus.Item1 - _mapViewSize / 2; x < _mapViewFocus.Item1 + _mapViewSize / 2; x++)
+            for (int x = (int) _mapViewFocus.x - _mapViewSize / 2; x < _mapViewFocus.x + _mapViewSize / 2; x++)
             {
                 GameObject cell = ColorDebugPrefabFactory.CreateMapCell(_mapData[y, x], new Vector3(transform.position.x + displayX, transform.position.y + _mapViewSize - displayY, 1), transform);
                 cell.name = x + ":" + y + " - " + _mapData[y, x];
@@ -85,12 +85,12 @@ public class Map : MonoBehaviour
         }
     }
 
-    private void SetMapViewFocus((int, int) mapViewFocus)
+    private void SetMapViewFocus(Vector2 mapViewFocus)
     {
-        if (mapViewFocus.Item1 - _mapViewSize / 2 < 0) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (west) -> " + mapViewFocus); }
-        else if (mapViewFocus.Item1 + _mapViewSize / 2 > _mapData.GetLength(1)) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (east) -> " + mapViewFocus); }
-        else if (mapViewFocus.Item2 - _mapViewSize / 2 < 0) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (north) -> " + mapViewFocus); }
-        else if (mapViewFocus.Item2 + _mapViewSize / 2 > _mapData.GetLength(0)) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (south) -> " + mapViewFocus); }
+        if (mapViewFocus.x - _mapViewSize / 2 < 0) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (west) -> " + mapViewFocus); }
+        else if (mapViewFocus.x + _mapViewSize / 2 > _mapData.GetLength(1)) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (east) -> " + mapViewFocus); }
+        else if (mapViewFocus.y - _mapViewSize / 2 < 0) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (north) -> " + mapViewFocus); }
+        else if (mapViewFocus.y + _mapViewSize / 2 > _mapData.GetLength(0)) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (south) -> " + mapViewFocus); }
         else 
         { 
             _mapViewFocus = mapViewFocus;
