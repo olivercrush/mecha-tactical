@@ -66,15 +66,24 @@ public class Map : MonoBehaviour {
             Destroy(child.gameObject);
         }
 
+        Selector selector = ObjectFinder.GetSelector();
+        Vector2 selectedCellCoordinates = selector.GetSelectedCellCoordinates();
+        selector.DeselectCell();
+
         int displayY = 0;
         for (int y = (int)_mapViewFocus.y - _mapViewSize / 2; y < _mapViewFocus.y + _mapViewSize / 2; y++) {
 
             int displayX = 0;
             for (int x = (int)_mapViewFocus.x - _mapViewSize / 2; x < _mapViewFocus.x + _mapViewSize / 2; x++) {
-
-                GameObject cell = CellPrefabFactory.GetInstance().CreateMapCell(_mapData[y, x], new Vector3(transform.position.x + displayX, transform.position.y + _mapViewSize - displayY, 1), transform, _displayType);
+                GameObject cell = CellPrefabFactory.GetInstance().CreateMapCell(_mapData[y, x], new Vector2(x, y), new Vector3(transform.position.x + displayX, transform.position.y + _mapViewSize - displayY, 1), transform, _displayType);
                 cell.name = x + ":" + y + " - " + _mapData[y, x];
                 _mapCells[y, x] = cell;
+
+                
+                if (x == selectedCellCoordinates.x && y == selectedCellCoordinates.y) {
+                    selector.SelectCell(cell.GetComponent<Cell>());
+                }
+
                 displayX++;
             }
             displayY++;

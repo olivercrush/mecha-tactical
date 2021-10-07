@@ -24,28 +24,29 @@ public class CellPrefabFactory {
     private CellForest _cellForest;
     private CellWater _cellWater;
 
-    public GameObject CreateMapCell(int type, Vector3 position, Transform parent, DisplayType displayType) {
+    public GameObject CreateMapCell(int type, Vector2 position, Vector3 displayPosition, Transform parent, DisplayType displayType) {
         GameObject prefab;
         if (displayType == DisplayType.DEBUG) prefab = Resources.Load<GameObject>("Prefabs/ColorDebugMapCell");
         else prefab = Resources.Load<GameObject>("Prefabs/MapCell");
 
-        GameObject cell = GameObject.Instantiate(prefab, position, Quaternion.identity, parent);
+        GameObject cell = GameObject.Instantiate(prefab, displayPosition, Quaternion.identity, parent);
+        Vector2 cellPosition = new Vector2(position.x, position.y);
 
         switch (type) {
             case 0:
-                cell.GetComponent<Cell>().Activate(_cellPlain);
+                cell.GetComponent<Cell>().Activate(cellPosition, _cellPlain);
                 break;
 
             case 2:
-                cell.GetComponent<Cell>().Activate(_cellForest);
+                cell.GetComponent<Cell>().Activate(cellPosition, _cellForest);
                 break;
 
             case 3:
-                cell.GetComponent<Cell>().Activate(_cellWater);
+                cell.GetComponent<Cell>().Activate(cellPosition, _cellWater);
                 break;
 
             default:
-                cell.GetComponent<Cell>().Activate(_cellPlain);
+                cell.GetComponent<Cell>().Activate(cellPosition, _cellPlain);
                 break;
         }
 

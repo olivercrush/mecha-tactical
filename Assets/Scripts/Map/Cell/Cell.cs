@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Cell : MonoBehaviour {
-    protected Vector2 _position;
+    protected Vector2 _coordinates;
     protected CellType _type;
 
-    public Vector2 GetPosition() { return _position; }
+    public Vector2 GetCoordinates() { return _coordinates; }
     public CellType GetCellType() { return _type; }
 
     public SpriteRenderer GetSpriteRenderer() {
@@ -14,11 +14,12 @@ public abstract class Cell : MonoBehaviour {
             return sr;
         }
 
-        Debug.LogError("Cell.cs : Cell (" + _position.x + ":" + _position.y + ") can't return SpriteRenderer (probably because it has not been given one)");
+        Debug.LogError("Cell.cs : Cell (" + _coordinates.x + ":" + _coordinates.y + ") can't return SpriteRenderer (probably because it has not been given one)");
         return null;
     }
 
-    public virtual void Activate(CellType type) {
+    public virtual void Activate(Vector2 coordinates, CellType type) {
+        _coordinates = coordinates;
         _type = type;
     }
 

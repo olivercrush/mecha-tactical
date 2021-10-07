@@ -3,8 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapCell : Cell {
-    public override void Activate(CellType type) {
-        base.Activate(type);
+
+    private void OnMouseEnter() {
+        SelectThisCell();
+    }
+
+    private void OnMouseExit() {
+        DeselectThisCell();
+    }
+
+    private void OnMouseDown() {
+        ObjectFinder.GetSelector().SelectCell(this);
+    }
+
+    public override void Activate(Vector2 position, CellType type) {
+        base.Activate(position, type);
         SpriteRenderer sr = GetSpriteRenderer();
         if (sr != null) {
             //Debug.Log(_type.GetSprite());
@@ -13,10 +26,10 @@ public class MapCell : Cell {
     }
 
     public override void DeselectThisCell() {
-        throw new System.NotImplementedException();
+        ObjectFinder.GetCursor().DeselectCell();
     }
 
     protected override void SelectThisCell() {
-        throw new System.NotImplementedException();
+        ObjectFinder.GetCursor().SelectCell(this);
     }
 }
