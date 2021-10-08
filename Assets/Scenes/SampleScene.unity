@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 43203548}
   - component: {fileID: 43203549}
   - component: {fileID: 43203550}
+  - component: {fileID: 43203551}
   m_Layer: 0
   m_Name: Cursor
   m_TagString: Untagged
@@ -219,6 +220,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &43203551
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43203547}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a6fa50ad6bb03b745a14fa06d4b1e732, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &93413391
 GameObject:
   m_ObjectHideFlags: 0
