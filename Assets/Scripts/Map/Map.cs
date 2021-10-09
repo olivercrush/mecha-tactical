@@ -16,7 +16,7 @@ public class Map : MonoBehaviour {
     private Vector2 _mapMovement;
 
     private int[,] _mapData;
-    private GameObject[,] _mapCells;
+    private Cell[,] _mapCells;
 
     void Start() {
         LoadLevel("000");
@@ -55,33 +55,47 @@ public class Map : MonoBehaviour {
 
     private void LoadLevel(string name) {
         _mapData = FileUtils.ReadLevelFromFile(name);
-        _mapCells = new GameObject[_mapData.GetLength(0), _mapData.GetLength(1)];
+        _mapCells = new Cell[_mapData.GetLength(0), _mapData.GetLength(1)];
         _mapViewFocus = new Vector2(10, 10);
+
+        for (int y = 0; y < _mapCells.GetLength(0); y++) {
+            for (int x = 0; x < _mapCells.GetLength(1); x++) {
+                GameObject cell = CellPrefabFactory.GetInstance().CreateMapCell(_mapData[y, x], new Vector2(x, y), transform, _displayType);
+                cell.name = "Cell (" + x + ":" + y + ") - " + cell.GetComponent<Cell>().GetCellType().GetName();
+                _mapCells[y, x] = cell.GetComponent<Cell>();
+            }
+        }
 
         SetMapViewFocus(new Vector2(5, 5));
     }
 
     private void DisplayMap() {
-        foreach (Transform child in transform) {
+        /*foreach (Transform child in transform) {
             Destroy(child.gameObject);
-        }
+        }*/
+        DeactivateAllCells();
 
         Selector selector = ObjectFinder.GetSelector();
         Vector2 selectedCellCoordinates = selector.GetSelectedCellCoordinates();
-        selector.DeselectCell();
+        selector.HideSelector();
 
         int displayY = 0;
         for (int y = (int)_mapViewFocus.y - _mapViewSize / 2; y < _mapViewFocus.y + _mapViewSize / 2; y++) {
 
             int displayX = 0;
             for (int x = (int)_mapViewFocus.x - _mapViewSize / 2; x < _mapViewFocus.x + _mapViewSize / 2; x++) {
-                GameObject cell = CellPrefabFactory.GetInstance().CreateMapCell(_mapData[y, x], new Vector2(x, y), new Vector3(transform.position.x + displayX, transform.position.y + _mapViewSize - displayY, 1), transform, _displayType);
-                cell.name = x + ":" + y + " - " + _mapData[y, x];
-                _mapCells[y, x] = cell;
 
-                
+                _mapCells[y, x].transform.position = new Vector3(transform.position.x + displayX, transform.position.y + _mapViewSize - displayY, 1);
+                _mapCells[y, x].gameObject.SetActive(true);
+
+                /*GameObject cell = CellPrefabFactory.GetInstance().CreateMapCell(_mapData[y, x], new Vector2(x, y), new Vector3(transform.position.x + displayX, transform.position.y + _mapViewSize - displayY, 1), transform, _displayType);
+                cell.name = x + ":" + y + " - " + _mapData[y, x];
+                _mapCells[y, x] = cell;*/
+
+
                 if (x == selectedCellCoordinates.x && y == selectedCellCoordinates.y) {
-                    selector.SelectCell(cell.GetComponent<Cell>());
+                    Debug.Log("Showing (" + x + ":" + y + ")");
+                    selector.ShowSelector();
                 }
 
                 displayX++;
@@ -98,6 +112,14 @@ public class Map : MonoBehaviour {
         else {
             _mapViewFocus = mapViewFocus;
             DisplayMap();
+        }
+    }
+
+    private void DeactivateAllCells() {
+        for (int y = 0; y < _mapCells.GetLength(0); y++) {
+            for (int x = 0; x < _mapCells.GetLength(1); x++) {
+                _mapCells[y, x].gameObject.SetActive(false);
+            }
         }
     }
 }

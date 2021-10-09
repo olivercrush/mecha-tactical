@@ -7,8 +7,9 @@ public class Selector : MonoBehaviour {
     private Vector2 _selectedCellCoordinates;
 
     void Start() {
+        _selectedCell = null;
         _selectedCellCoordinates = new Vector2(-1, -1);
-        GetComponent<SpriteRenderer>().enabled = false;
+        HideSelector();
     }
 
     public void SelectCell(Cell cell) {
@@ -19,14 +20,26 @@ public class Selector : MonoBehaviour {
         else {
             _selectedCell = cell;
             _selectedCellCoordinates = cell.GetCoordinates();
-            transform.position = _selectedCell.transform.position;
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
             ObjectFinder.GetCursor().DeselectCell();
-            GetComponent<SpriteRenderer>().enabled = true;
+            ShowSelector();
         }
     }
 
     public void DeselectCell() {
+        _selectedCell = null;
+        _selectedCellCoordinates = new Vector2(-1, -1);
+        HideSelector();
+    }
+
+    public void ShowSelector() {
+        if (_selectedCell != null) {
+            transform.position = _selectedCell.transform.position;
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+            GetComponent<SpriteRenderer>().enabled = true;
+        }
+    }
+
+    public void HideSelector() {
         GetComponent<SpriteRenderer>().enabled = false;
     }
 
