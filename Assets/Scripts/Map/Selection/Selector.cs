@@ -18,10 +18,16 @@ public class Selector : MonoBehaviour {
             ObjectFinder.GetCursor().SelectCell(cell);
         }
         else {
+            // ON MAP
             _selectedCell = cell;
             _selectedCellCoordinates = cell.GetCoordinates();
             ObjectFinder.GetCursor().DeselectCell();
             ShowSelector();
+
+            // ON UI
+            ObjectFinder.GetUIManager().SetCellTypeText(_selectedCell.GetCellType().GetName());
+            ObjectFinder.GetUIManager().SetCellCoordinates(_selectedCell.GetCoordinates());
+            ObjectFinder.GetUIManager().SetCellSprite(_selectedCell.GetCellType().GetSprite());
         }
     }
 
@@ -29,6 +35,9 @@ public class Selector : MonoBehaviour {
         _selectedCell = null;
         _selectedCellCoordinates = new Vector2(-1, -1);
         HideSelector();
+
+        // ON UI
+        ObjectFinder.GetUIManager().ClearCellSelection();
     }
 
     public void ShowSelector() {

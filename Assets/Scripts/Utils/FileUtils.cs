@@ -5,7 +5,7 @@ using System.IO;
 
 public static class FileUtils
 {
-    public static int[,] ReadLevelFromFile(string name)
+    public static int[,] ReadMapFromFile(string name)
     {
         List<string> fileLines = new List<string>();
 

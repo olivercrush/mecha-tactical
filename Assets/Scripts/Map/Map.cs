@@ -54,7 +54,8 @@ public class Map : MonoBehaviour {
     }
 
     private void LoadLevel(string name) {
-        _mapData = FileUtils.ReadLevelFromFile(name);
+        //_mapData = FileUtils.ReadMapFromFile(name);
+        _mapData = MapGenerator.GenerateMap(new Vector2(30, 30));
         _mapCells = new Cell[_mapData.GetLength(0), _mapData.GetLength(1)];
         _mapViewFocus = new Vector2(10, 10);
 
