@@ -55,9 +55,8 @@ public class Map : MonoBehaviour {
 
     private void LoadLevel(string name) {
         //_mapData = FileUtils.ReadMapFromFile(name);
-        _mapData = MapGenerator.GenerateMap(new Vector2(30, 30));
+        _mapData = ObjectFinder.GetMapGenerator().GenerateMap(new Vector2(30, 30));
         _mapCells = new Cell[_mapData.GetLength(0), _mapData.GetLength(1)];
-        _mapViewFocus = new Vector2(10, 10);
 
         for (int y = 0; y < _mapCells.GetLength(0); y++) {
             for (int x = 0; x < _mapCells.GetLength(1); x++) {
@@ -67,7 +66,7 @@ public class Map : MonoBehaviour {
             }
         }
 
-        SetMapViewFocus(new Vector2(5, 5));
+        SetMapViewFocus(new Vector2(_mapData.GetLength(1) / 2, _mapData.GetLength(0) / 2));
     }
 
     private void DisplayMap() {
