@@ -1170,5 +1170,5 @@ MonoBehaviour:
   _xOrg: 0
   _yOrg: 0
   _scale: 5
-  _riverFilter: 0.35
-  _forestFilter: 0.6
+  _riverFilter: 0.3
+  _forestFilter: 0.55
