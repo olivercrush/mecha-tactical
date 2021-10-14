@@ -53,7 +53,7 @@ public class Map : MonoBehaviour {
         SetMapViewFocus(_mapViewFocus + _mapMovement);
     }
 
-    private void LoadLevel(string name) {
+    public void LoadLevel(string name) {
         //_mapData = FileUtils.ReadMapFromFile(name);
         _mapData = ObjectFinder.GetMapGenerator().GenerateMap(new Vector2(30, 30));
         _mapCells = new Cell[_mapData.GetLength(0), _mapData.GetLength(1)];
@@ -120,6 +120,12 @@ public class Map : MonoBehaviour {
             for (int x = 0; x < _mapCells.GetLength(1); x++) {
                 _mapCells[y, x].gameObject.SetActive(false);
             }
+        }
+    }
+
+    public void DeleteAllCells() {
+        for (int i = transform.childCount - 1; i >= 0; i--) {
+            DestroyImmediate(transform.GetChild(i).gameObject);
         }
     }
 }

@@ -55,6 +55,7 @@ public class MapGenerator : MonoBehaviour {
                     while (current.y < size.y - 1 && current.x > 0 && current.x < size.x) {
                         directionChange = Random.Range(-1, 2);
                         current += new Vector2(directionChange, 1);
+                        if (current.x >= size.x || current.x < 0) { current -= new Vector2(directionChange, 0); }
                         riverMap[(int)current.y, (int)current.x] = 3;
                         if (directionChange != 0) { riverMap[(int)current.y, (int)current.x - directionChange] = 3; }
                     }
@@ -67,6 +68,7 @@ public class MapGenerator : MonoBehaviour {
                     while (current.x < size.x - 1 && current.y > 0 && current.y < size.y) {
                         directionChange = Random.Range(-1, 2);
                         current += new Vector2(1, directionChange);
+                        if (current.y >= size.y || current.y < 0) { current -= new Vector2(0, directionChange); }
                         riverMap[(int)current.y, (int)current.x] = 3;
                         if (directionChange != 0) { riverMap[(int)current.y - directionChange, (int)current.x] = 3; }
                     }

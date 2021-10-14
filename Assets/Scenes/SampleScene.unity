@@ -1030,7 +1030,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1368593466}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -1167,8 +1167,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d3353bc8bc05a498d27c93ad012222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _xOrg: 0
-  _yOrg: 0
   _scale: 5
   _riverFilter: 0.3
   _forestFilter: 0.55
