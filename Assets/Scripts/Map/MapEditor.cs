@@ -10,7 +10,6 @@ public class MapEditor : Editor {
 
         Map map = (Map)target;
         if (GUILayout.Button("Generate Map")) {
-            map.DeleteAllCells();
             map.LoadLevel("000");
         }
     }

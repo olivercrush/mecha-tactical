@@ -54,6 +54,8 @@ public class Map : MonoBehaviour {
     }
 
     public void LoadLevel(string name) {
+        DeleteAllCells();
+
         //_mapData = FileUtils.ReadMapFromFile(name);
         _mapData = ObjectFinder.GetMapGenerator().GenerateMap(new Vector2(30, 30));
         _mapCells = new Cell[_mapData.GetLength(0), _mapData.GetLength(1)];
@@ -123,7 +125,7 @@ public class Map : MonoBehaviour {
         }
     }
 
-    public void DeleteAllCells() {
+    private void DeleteAllCells() {
         for (int i = transform.childCount - 1; i >= 0; i--) {
             DestroyImmediate(transform.GetChild(i).gameObject);
         }

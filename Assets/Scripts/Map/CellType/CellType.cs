@@ -20,7 +20,7 @@ public abstract class CellType : ScriptableObject {
         if (_sprite == null) {
             _sprite = Resources.Load<Sprite>(_spritePath);
             //Debug.Log("Loading " + _spritePath);
-            Debug.Log(_sprite);
+            //Debug.Log(_sprite);
         }
         return _sprite; 
     }

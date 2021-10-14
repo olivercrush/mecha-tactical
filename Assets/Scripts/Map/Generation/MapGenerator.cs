@@ -14,27 +14,33 @@ public class MapGenerator : MonoBehaviour {
         _xOrg = Random.Range(0.0f, 100.0f);
         _yOrg = Random.Range(0.0f, 100.0f);
 
-        int[,] map = GenerateBaseRivers(size);
+        int[,] map = new int[(int)size.y, (int)size.x];
         float[,] noise = GeneratePerlinNoise(size);
-        DebugUtils.DumpFloat2DArray(noise, "Perlin Noise");
 
+        // DebugUtils.DumpFloat2DArray(noise, "Perlin Noise");
+        
         for (int y = 0; y < size.y; y++) {
             for (int x = 0; x < size.x; x++) {
                 if (map[y,x] != 3) {
                     if (noise[y, x] > _forestFilter) {
                         map[y, x] = 2;
                     }
-                    else {
+                    else if (noise[y,x] > _riverFilter) {
                         map[y, x] = 0;
+                    }
+                    else {
+                        map[y, x] = 3;
                     }
                 }
             }
         }
 
+        RiverGeneration.Debug(map);
+
         return map;
     }
 
-    private int[,] GenerateBaseRivers(Vector2 size) {
+    /*private int[,] GenerateBaseRivers(Vector2 size) {
         int[,] riverMap = new int[(int)size.y, (int)size.x];
 
         for (int y = 0; y < size.y; y++) {
@@ -77,7 +83,7 @@ public class MapGenerator : MonoBehaviour {
         }
         
         return riverMap;
-    }
+    }*/
 
     private float[,] GeneratePerlinNoise(Vector2 size) {
         float[,] noise = new float[(int)size.y, (int)size.x];

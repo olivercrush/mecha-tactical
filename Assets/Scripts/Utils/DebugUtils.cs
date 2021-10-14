@@ -25,4 +25,23 @@ public static class DebugUtils {
         }
     }
 
+    public static void DumpString(string str) {
+        string path = "Logs/string_dump.txt";
+
+        using (StreamWriter sw = File.CreateText(path)) {
+            sw.WriteLine("======================= STRING DUMP / " + DateTime.Now.ToString() + " =======================");
+            sw.WriteLine(str);
+        }
+    }
+
+    public static void DumpStringList(List<string> a) {
+        string path = "Logs/string_list_dump.txt";
+
+        using (StreamWriter sw = File.CreateText(path)) {
+            sw.WriteLine("======================= STRING ARRAY DUMP / " + DateTime.Now.ToString() + " =======================");
+            foreach (string str in a) {
+                sw.WriteLine(str);
+            }
+        }
+    }
 }
