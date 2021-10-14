@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MapGenerator : MonoBehaviour {
@@ -35,7 +36,13 @@ public class MapGenerator : MonoBehaviour {
             }
         }
 
-        RiverGeneration.Debug(map);
+        //RiverGeneration.Debug(map);
+        List<Vector2> rivers = RiverGeneration.ConnectWaterBodies(map, noise);
+        foreach (Vector2 waterCell in rivers) {
+            map[(int)waterCell.y, (int)waterCell.x] = 3;
+        }
+
+        DebugUtils.DumpString("River count : " + rivers.Count);
 
         return map;
     }
