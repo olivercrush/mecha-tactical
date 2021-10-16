@@ -15,8 +15,11 @@ public static class RiverGeneration {
         int riverCount = Random.Range(2, waterBodiesCenter.Count - 1);
         for (int i = 0; i < riverCount; i++) {
             int start = Random.Range(0, waterBodies.Count - 1);
+            Vector2 end = GetNearestPoint(waterBodiesCenter, waterBodiesCenter[start]);
 
-            List<Vector2> path = AStarRiver(map, noise, waterBodiesCenter[start], GetNearestPoint(waterBodiesCenter, waterBodiesCenter[start]));
+            //DebugUtils.DumpString("River from point (" + waterBodiesCenter[start].x + ";" + waterBodiesCenter[start].y + ") to point (" + end.x + ";" + end.y + ")");
+
+            List<Vector2> path = AStarRiver(map, noise, waterBodiesCenter[start], end);
             foreach (Vector2 cell in path) {
                 waterCells.Add(cell);
             }
@@ -208,7 +211,7 @@ public static class RiverGeneration {
         Vector2 nearest = point;
         foreach (Vector2 v in list) {
             float distance = Vector2.Distance(v, point);
-            if (distance < min) {
+            if (distance < min && v != point) {
                 min = distance;
                 nearest = v;
             }

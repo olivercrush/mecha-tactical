@@ -42,7 +42,7 @@ public class MapGenerator : MonoBehaviour {
             map[(int)waterCell.y, (int)waterCell.x] = 3;
         }
 
-        DebugUtils.DumpString("River count : " + rivers.Count);
+        //DebugUtils.DumpString("River count : " + rivers.Count);
 
         return map;
     }
