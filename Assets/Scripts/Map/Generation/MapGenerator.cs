@@ -37,7 +37,9 @@ public class MapGenerator : MonoBehaviour {
         }
 
         //RiverGeneration.Debug(map);
+        DebugUtils.DumpString("BEGIN A*");
         List<Vector2> rivers = RiverGeneration.ConnectWaterBodies(map, noise);
+        DebugUtils.DumpString("END A*");
         foreach (Vector2 waterCell in rivers) {
             map[(int)waterCell.y, (int)waterCell.x] = 3;
         }
