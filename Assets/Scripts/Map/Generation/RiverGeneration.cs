@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+// https://brilliant.org/wiki/a-star-search/
+// https://www.geeksforgeeks.org/a-search-algorithm/
+// https://www.educative.io/edpresso/what-is-the-a-star-algorithm
+// https://mat.uab.cat/~alseda/MasterOpt/AStar-Algorithm.pdf
+
 public static class RiverGeneration {
 
     public static List<Vector2> ConnectWaterBodies(int[,] map, float[,] noise) {
@@ -36,6 +41,75 @@ public static class RiverGeneration {
     }
 
     private static List<Vector2> AStarRiver(int[,] map, float[,] noise, Vector2 start, Vector2 goal) {
+
+        AStarNode goalNode = null;
+
+        // Create open and closed lists
+        List<AStarNode> open = new List<AStarNode>();
+        List<AStarNode> closed = new List<AStarNode>();
+
+        // Put node_start in the open list
+        open.Add(new AStarNode(null, start, goal, 0));
+
+        // While the open list is not empty
+        while (open.Count > 0) {
+            // Take the node with the lowest f from the open list
+            AStarNode current = GetLowestF(open);
+            open.Remove(current);
+
+            DebugUtils.DumpString("current : " + current.GetPosition().ToString() + " / goal : " + goal.ToString());
+
+            // If the current node is the goal, we found the solution
+            if (current.GetPosition() == goal) {
+                goalNode = current;
+                break;
+            }
+
+            // We generate all neighbours from the current node
+            foreach (Vector2 neighbourPos in GetNeighbours(map, current.GetPosition())) {
+
+                DebugUtils.DumpString("checking neighbour : " + neighbourPos.ToString());
+
+                // We create the neighbour node and set its f
+                float cellNoise = noise[(int)neighbourPos.y, (int)neighbourPos.x];
+                float neighbourCost = current.GetG() + cellNoise;
+
+
+                if (IsInList(open, neighbourPos)) {
+                    AStarNode tmp = GetNodeFromList(open, neighbourPos);
+                    DebugUtils.DumpString("neighbour is in open list");
+                    if (tmp.GetG() <= neighbourCost) continue;
+                    DebugUtils.DumpString("with higer g value");
+                }
+                else if (IsInList(closed, neighbourPos)) {
+                    AStarNode tmp = GetNodeFromList(closed, neighbourPos);
+                    DebugUtils.DumpString("neighbour is in closed list");
+                    if (tmp.GetG() <= neighbourCost) continue;
+                    DebugUtils.DumpString("with higer g value, sending it to open list");
+                    open.Add(tmp);
+                    RemoveFromList(closed, tmp);
+                }
+                else {
+                    DebugUtils.DumpString("neighbour is in no lists, sending it to open list");
+                    AStarNode neighbourNode = new AStarNode(current, neighbourPos, goal, neighbourCost);
+                    open.Add(neighbourNode);
+                }
+            }
+
+            closed.Add(current);
+        }
+
+        List<Vector2> path = new List<Vector2>();
+        AStarNode buffer = goalNode;
+        while (buffer != null && buffer.GetPosition() != start) {
+            path.Add(buffer.GetPosition());
+            buffer = buffer.GetParent();
+        }
+
+        return path;
+    }
+
+    /* private static List<Vector2> AStarRiver(int[,] map, float[,] noise, Vector2 start, Vector2 goal) {
         List<AStarNode> closed = new List<AStarNode>();
 
         List<AStarNode> open = new List<AStarNode>();
@@ -45,12 +119,24 @@ public static class RiverGeneration {
 
         bool searching = true;
         while (searching && open.Count > 0) {
+
+            // DEBUG
+            //DebugUtils.DumpString("open count : " + open.Count + " / closed count : " + closed.Count);
+
             AStarNode q = GetLowestF(open);
             open.Remove(q);
 
-            foreach (Vector2 neighbour in GetNeighbours(q.GetPosition())) {
+            DebugUtils.DumpString("current : " + q.GetPosition().ToString() + " / goal : " + goal.ToString());
+
+            if (q.GetPosition() == goal) {
+                goalNode = q;
+                break;
+            }
+
+            foreach (Vector2 neighbour in GetNeighbours(map, q.GetPosition())) {
                 if (IsCellValid(map, neighbour)) {
-                    if (neighbour == goal) {
+
+                    /*if (neighbour == goal) {
                         goalNode = new AStarNode(q, neighbour, goal, q.GetG() + 0);
                         searching = false;
                         break; 
@@ -59,7 +145,7 @@ public static class RiverGeneration {
                     float mapDivider;
                     switch (map[(int)neighbour.y, (int)neighbour.x]) {
                         case 2:
-                            mapDivider = 0.00002f;
+                            mapDivider = 0.01f;
                             break;
 
                         case 3:
@@ -75,7 +161,27 @@ public static class RiverGeneration {
                     float cellNoise = noise[(int)neighbour.y, (int)neighbour.x];
                     AStarNode neighbourNode = new AStarNode(q, neighbour, goal, q.GetG() + cellNoise / mapDivider);
 
-                    if (!IsNodeInListWithLowerF(open, neighbourNode)) {
+                    if (IsInList(open, neighbourNode)) {
+                        if (GetNodeFromList(open, neighbourNode).GetG() <= neighbourNode.GetG()) break;
+                    }
+                    else if (IsInList(closed, neighbourNode)) {
+                        if (GetNodeFromList(closed, neighbourNode).GetG() <= neighbourNode.GetG()) break;
+                        RemoveFromList(closed, neighbourNode);
+                        open.Add(neighbourNode);
+                    }
+                    else {
+                        open.Add(neighbourNode);
+                    }
+
+
+
+                    /*if (!closed.Contains(neighbourNode)) {
+                        if (!IsNodeInListWithLowerF(open, neighbourNode)) {
+                            open.Add(neighbourNode);
+                        }
+                    }*/
+
+                    /*if (!IsNodeInListWithLowerF(open, neighbourNode)) {
                         if (!IsNodeInListWithLowerF(closed, neighbourNode)) {
                             open.Add(neighbourNode);
                         }
@@ -85,6 +191,7 @@ public static class RiverGeneration {
 
             closed.Add(q);
         }
+        DebugUtils.DumpString("A* over");
 
         List<Vector2> path = new List<Vector2>();
         AStarNode buffer = goalNode;
@@ -94,6 +201,28 @@ public static class RiverGeneration {
         }
 
         return path;
+    } */
+
+    private static void RemoveFromList(List<AStarNode> list, AStarNode node) {
+        AStarNode toRemove = null;
+        foreach (AStarNode n in list) {
+            if (n.GetPosition() == node.GetPosition()) toRemove = n;
+        }
+        if (toRemove != null) list.Remove(toRemove);
+    }
+
+    private static AStarNode GetNodeFromList(List<AStarNode> list, Vector2 pos) {
+        foreach (AStarNode n in list) {
+            if (n.GetPosition() == pos) return n;
+        }
+        return null;
+    }
+
+    private static bool IsInList(List<AStarNode> list, Vector2 pos) {
+        foreach (AStarNode n in list) {
+            if (n.GetPosition() == pos) return true;
+        }
+        return false;
     }
 
     private static bool IsNodeInListWithLowerF(List<AStarNode> list, AStarNode node) {
@@ -154,7 +283,7 @@ public static class RiverGeneration {
         queue.Add(waterCell);
 
         while (queue.Count > 0) {
-            foreach (Vector2 n in GetNeighbours(queue[0])) {
+            foreach (Vector2 n in GetNeighbours(map, queue[0])) {
                 if (!IsPartOfWaterBody(waterBody, n)) {
                     if (IsCellValid(map, n) && map[(int)n.y, (int)n.x] == 3 && !IsPartOfWaterBody(queue, n)) {
                         queue.Add(n);
@@ -195,13 +324,13 @@ public static class RiverGeneration {
         return false;
     }
 
-    private static List<Vector2> GetNeighbours(Vector2 cell) {
+    private static List<Vector2> GetNeighbours(int[,] map, Vector2 cell) {
         List<Vector2> neighbours = new List<Vector2>();
 
-        neighbours.Add(new Vector2(cell.x - 1, cell.y));
-        neighbours.Add(new Vector2(cell.x + 1, cell.y));
-        neighbours.Add(new Vector2(cell.x, cell.y - 1));
-        neighbours.Add(new Vector2(cell.x, cell.y + 1));
+        if (cell.x - 1 >= 0) neighbours.Add(new Vector2(cell.x - 1, cell.y));
+        if (cell.x + 1 < map.GetLength(1)) neighbours.Add(new Vector2(cell.x + 1, cell.y));
+        if (cell.y - 1 >= 0) neighbours.Add(new Vector2(cell.x, cell.y - 1));
+        if (cell.y + 1 < map.GetLength(0)) neighbours.Add(new Vector2(cell.x, cell.y + 1));
 
         return neighbours;
     }
@@ -233,7 +362,11 @@ public static class RiverGeneration {
             this.parent = parent;
             this.pos = pos;
             this.g = g;
-            this.h = (Mathf.Abs(pos.x - goal.x) + Mathf.Abs(pos.y - goal.y))*0.5f;
+            this.h = (Mathf.Abs(pos.x - goal.x) + Mathf.Abs(pos.y - goal.y)) * 0.5f;
+        }
+
+        public void SetG(float g) {
+            this.g = g;
         }
 
         public AStarNode GetParent() { return parent; }
