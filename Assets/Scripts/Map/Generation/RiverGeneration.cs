@@ -72,7 +72,23 @@ public static class RiverGeneration {
 
                 // We create the neighbour node and set its f
                 float cellNoise = noise[(int)neighbourPos.y, (int)neighbourPos.x];
-                float neighbourCost = current.GetG() + cellNoise;
+
+                float mapDivider;
+                switch (map[(int)neighbourPos.y, (int)neighbourPos.x]) {
+                    case 2:
+                        mapDivider = 0.0000000000000000001f;
+                        break;
+
+                    case 3:
+                        mapDivider = 100000000000000000000f;
+                        break;
+
+                    default:
+                        mapDivider = 1f;
+                        break;
+                }
+
+                float neighbourCost = current.GetG() + cellNoise / mapDivider;
 
 
                 if (IsInList(open, neighbourPos)) {
