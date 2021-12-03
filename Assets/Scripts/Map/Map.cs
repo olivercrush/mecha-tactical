@@ -96,7 +96,7 @@ public class Map : MonoBehaviour {
 
 
                 if (x == selectedCellCoordinates.x && y == selectedCellCoordinates.y) {
-                    Debug.Log("Showing (" + x + ":" + y + ")");
+                    // Debug.Log("Showing (" + x + ":" + y + ")");
                     selector.ShowSelector();
                 }
 

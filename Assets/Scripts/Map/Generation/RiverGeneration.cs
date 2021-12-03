@@ -22,6 +22,7 @@ public static class RiverGeneration {
             Vector2 end = GetNearestPoint(waterBodiesCenter, waterBodiesCenter[start]);
 
             List<Vector2> path = AStar.GeneratePath(map, noise, waterBodiesCenter[start], end);
+
             foreach (Vector2 cell in path) {
                 waterCells.Add(cell);
             }

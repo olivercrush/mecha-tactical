@@ -19,8 +19,6 @@ public static class AStar {
             AStarNode current = GetLowestF(open);
             open.Remove(current);
 
-            DebugUtils.DumpString("current : " + current.GetPosition().ToString() + " / goal : " + goal.ToString());
-
             // If the current node is the goal, we found the solution
             if (current.GetPosition() == goal) {
                 goalNode = current;
@@ -29,8 +27,6 @@ public static class AStar {
 
             // We generate all neighbours from the current node
             foreach (Vector2 neighbourPos in GetNeighbours(map, current.GetPosition())) {
-
-                DebugUtils.DumpString("checking neighbour : " + neighbourPos.ToString());
 
                 // We create the neighbour node and set its f
                 float cellNoise = noise[(int)neighbourPos.y, (int)neighbourPos.x];
@@ -55,20 +51,15 @@ public static class AStar {
 
                 if (IsInList(open, neighbourPos)) {
                     AStarNode tmp = GetNodeFromList(open, neighbourPos);
-                    DebugUtils.DumpString("neighbour is in open list");
                     if (tmp.GetG() <= neighbourCost) continue;
-                    DebugUtils.DumpString("with higer g value");
                 }
                 else if (IsInList(closed, neighbourPos)) {
                     AStarNode tmp = GetNodeFromList(closed, neighbourPos);
-                    DebugUtils.DumpString("neighbour is in closed list");
                     if (tmp.GetG() <= neighbourCost) continue;
-                    DebugUtils.DumpString("with higer g value, sending it to open list");
                     open.Add(tmp);
                     RemoveFromList(closed, tmp);
                 }
                 else {
-                    DebugUtils.DumpString("neighbour is in no lists, sending it to open list");
                     AStarNode neighbourNode = new AStarNode(current, neighbourPos, goal, neighbourCost);
                     open.Add(neighbourNode);
                 }
@@ -121,13 +112,6 @@ public static class AStar {
         return false;
     }
 
-    private static bool IsNodeInListWithLowerF(List<AStarNode> list, AStarNode node) {
-        foreach (AStarNode n in list) {
-            if (node.GetPosition() == n.GetPosition() && node.GetF() > n.GetF()) return true;
-        }
-        return false;
-    }
-
     private static AStarNode GetLowestF(List<AStarNode> nodes) {
         float minF = 9999999999;
         AStarNode minNode = nodes[0];
@@ -150,7 +134,7 @@ public static class AStar {
             this.parent = parent;
             this.pos = pos;
             this.g = g;
-            this.h = (Mathf.Abs(pos.x - goal.x) + Mathf.Abs(pos.y - goal.y)) * 0.5f;
+            this.h = Mathf.Abs(pos.x - goal.x) + Mathf.Abs(pos.y - goal.y);
         }
 
         public void SetG(float g) {
