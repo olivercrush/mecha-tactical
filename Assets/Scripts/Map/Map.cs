@@ -19,8 +19,8 @@ public class Map : MonoBehaviour {
     private Cell[,] _mapCells;
 
     void Start() {
-        LoadLevel("000");
-        _mapMovement = new Vector2(0, 0);
+        // LoadLevel("000");
+        // _mapMovement = new Vector2(0, 0);
     }
 
     void Update() {
@@ -53,7 +53,7 @@ public class Map : MonoBehaviour {
         SetMapViewFocus(_mapViewFocus + _mapMovement);
     }
 
-    public void LoadLevel(string name) {
+    public void Load() {
         DeleteAllCells();
 
         //_mapData = FileUtils.ReadMapFromFile(name);
@@ -68,6 +68,7 @@ public class Map : MonoBehaviour {
             }
         }
 
+        _mapMovement = new Vector2(0, 0);
         SetMapViewFocus(new Vector2(_mapData.GetLength(1) / 2, _mapData.GetLength(0) / 2));
     }
 

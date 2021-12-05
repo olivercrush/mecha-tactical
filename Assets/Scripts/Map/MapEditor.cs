@@ -10,7 +10,7 @@ public class MapEditor : Editor {
 
         Map map = (Map)target;
         if (GUILayout.Button("Generate Map")) {
-            map.LoadLevel("000");
+            map.Load();
         }
     }
 
