@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class CellWater : CellType {
     public CellWater() : base() {
         _id = 2;

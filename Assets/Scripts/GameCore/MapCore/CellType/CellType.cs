@@ -25,6 +25,4 @@ public abstract class CellType : ScriptableObject {
         return _sprite; 
     }
     public Color GetDebugColor() { return _debugColor; }
-
-
 }

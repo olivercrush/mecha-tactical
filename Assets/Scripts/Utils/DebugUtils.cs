@@ -24,6 +24,24 @@ public static class DebugUtils {
         }
     }
 
+    public static void DumpInt2DArray(int[,] a, string name) {
+        string path = "Logs/2d_dump_" + name + ".txt";
+
+        using (StreamWriter sw = File.CreateText(path)) {
+            sw.WriteLine("======================= " + name + " / " + DateTime.Now.ToString() + " =======================");
+
+            for (int y = 0; y < a.GetLength(0); y++) {
+                string line = "";
+                for (int x = 0; x < a.GetLength(1); x++) {
+                    line += a[y, x].ToString("0.00") + " ";
+                }
+                sw.WriteLine(line);
+            }
+
+            sw.WriteLine("\n\n");
+        }
+    }
+
     public static void DumpString(string str) {
         string path = "Logs/string_dump.txt";
 

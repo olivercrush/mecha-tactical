@@ -33,24 +33,24 @@ public class CellPrefabFactory {
         cell.SetActive(false);
         Vector2 cellPosition = new Vector2(position.x, position.y);
 
-        switch (type) {
-            case 0:
-                cell.GetComponent<Cell>().Activate(cellPosition, _cellPlain);
-                break;
-
-            case 2:
-                cell.GetComponent<Cell>().Activate(cellPosition, _cellForest);
-                break;
-
-            case 3:
-                cell.GetComponent<Cell>().Activate(cellPosition, _cellWater);
-                break;
-
-            default:
-                cell.GetComponent<Cell>().Activate(cellPosition, _cellPlain);
-                break;
-        }
+        cell.GetComponent<Cell>().Activate(cellPosition, GetCellTypeInstance(type));
 
         return cell;
+    }
+
+    public CellType GetCellTypeInstance(int cellType) {
+        switch (cellType) {
+            case 0:
+                return _cellPlain;
+
+            case 2:
+                return _cellForest;
+
+            case 3:
+                return _cellWater;
+
+            default:
+                return _cellPlain;
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class MapGenerator : MonoBehaviour {
+public class MapGenerator {
 
     private float _xOrg = 0.0f;
     private float _yOrg = 0.0f;

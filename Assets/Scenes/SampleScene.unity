@@ -819,7 +819,7 @@ GameObject:
   - component: {fileID: 1003443843}
   - component: {fileID: 1003443844}
   m_Layer: 0
-  m_Name: LogicManager
+  m_Name: GameCore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

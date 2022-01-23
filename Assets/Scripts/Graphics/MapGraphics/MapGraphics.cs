@@ -7,7 +7,7 @@ public enum DisplayType {
     PROD
 }
 
-public class Map : MonoBehaviour {
+public class MapGraphics : MonoBehaviour {
     public DisplayType _displayType;
 
     public int _mapViewSize = 10;
