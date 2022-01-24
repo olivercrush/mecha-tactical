@@ -8,20 +8,14 @@ public enum DisplayType {
 }
 
 public class MapGraphics : MonoBehaviour {
-    public DisplayType _displayType;
+    public DisplayType _displayType = DisplayType.PROD;
 
-    public int _mapViewSize = 10;
-    public float _mapSpeed = 0.5f;
-    private Vector2 _mapViewFocus;
+    private float _mapSpeed = 0.5f;
+    private int _mapViewSize = 10;
+    private Vector2 _mapView;
     private Vector2 _mapMovement;
 
-    private int[,] _mapData;
     private Cell[,] _mapCells;
-
-    void Start() {
-        // LoadLevel("000");
-        // _mapMovement = new Vector2(0, 0);
-    }
 
     void Update() {
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.Q)) { CancelInvoke("MoveMap"); }
@@ -49,73 +43,46 @@ public class MapGraphics : MonoBehaviour {
         }
     }
 
-    private void MoveMap() {
-        SetMapViewFocus(_mapViewFocus + _mapMovement);
-    }
-
     public void Load() {
         DeleteAllCells();
 
-        //_mapData = FileUtils.ReadMapFromFile(name);
-        _mapData = ObjectFinder.GetMapGenerator().GenerateMap(new Vector2(30, 30));
-        _mapCells = new Cell[_mapData.GetLength(0), _mapData.GetLength(1)];
+        _mapCells = new Cell[_mapViewSize, _mapViewSize];
 
         for (int y = 0; y < _mapCells.GetLength(0); y++) {
             for (int x = 0; x < _mapCells.GetLength(1); x++) {
-                GameObject cell = CellPrefabFactory.GetInstance().CreateMapCell(_mapData[y, x], new Vector2(x, y), transform, _displayType);
-                cell.name = "Cell (" + x + ":" + y + ") - " + cell.GetComponent<Cell>().GetCellType().GetName();
+                GameObject cell = CellPrefabFactory.GetInstance().CreateMapCell(transform, _displayType);
+                cell.name = "Cell (" + x + ":" + y + ")";
                 _mapCells[y, x] = cell.GetComponent<Cell>();
+                _mapCells[y, x].transform.position = new Vector3(transform.position.x + x, transform.position.y + _mapViewSize - y, 1);
             }
         }
 
         _mapMovement = new Vector2(0, 0);
-        SetMapViewFocus(new Vector2(_mapData.GetLength(1) / 2, _mapData.GetLength(0) / 2));
+        SetMapView(new Vector2(5, 5));
     }
 
     private void DisplayMap() {
-        /*foreach (Transform child in transform) {
-            Destroy(child.gameObject);
-        }*/
-        DeactivateAllCells();
+        // Selector selector = ObjectFinder.GetSelector();
+        // Vector2 selectedCellCoordinates = selector.GetSelectedCellCoordinates();
+        // selector.HideSelector();
 
-        Selector selector = ObjectFinder.GetSelector();
-        Vector2 selectedCellCoordinates = selector.GetSelectedCellCoordinates();
-        selector.HideSelector();
+        int[,] mapParts = GetComponentInParent<GraphicsManager>()._gameCore.GetMapPart((int)_mapView.x - _mapViewSize / 2, (int)_mapView.y - _mapViewSize / 2, (int)_mapView.x + _mapViewSize / 2, (int)_mapView.y + _mapViewSize / 2);
 
-        int displayY = 0;
-        for (int y = (int)_mapViewFocus.y - _mapViewSize / 2; y < _mapViewFocus.y + _mapViewSize / 2; y++) {
+        for (int y = 0; y < mapParts.GetLength(0); y++) {
+            for (int x = 0; x < mapParts.GetLength(1); x++) {
 
-            int displayX = 0;
-            for (int x = (int)_mapViewFocus.x - _mapViewSize / 2; x < _mapViewFocus.x + _mapViewSize / 2; x++) {
+                _mapCells[y, x].SetType(CellPrefabFactory.GetInstance().GetCellTypeInstance(mapParts[y, x]));
 
-                _mapCells[y, x].transform.position = new Vector3(transform.position.x + displayX, transform.position.y + _mapViewSize - displayY, 1);
-                _mapCells[y, x].gameObject.SetActive(true);
-
-                /*GameObject cell = CellPrefabFactory.GetInstance().CreateMapCell(_mapData[y, x], new Vector2(x, y), new Vector3(transform.position.x + displayX, transform.position.y + _mapViewSize - displayY, 1), transform, _displayType);
-                cell.name = x + ":" + y + " - " + _mapData[y, x];
-                _mapCells[y, x] = cell;*/
-
-
-                if (x == selectedCellCoordinates.x && y == selectedCellCoordinates.y) {
-                    // Debug.Log("Showing (" + x + ":" + y + ")");
+                /*if (x == selectedCellCoordinates.x && y == selectedCellCoordinates.y) {
                     selector.ShowSelector();
-                }
-
-                displayX++;
+                }*/
             }
-            displayY++;
         }
     }
 
-    private void SetMapViewFocus(Vector2 mapViewFocus) {
-        if (mapViewFocus.x - _mapViewSize / 2 < 0) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (west) -> " + mapViewFocus); }
-        else if (mapViewFocus.x + _mapViewSize / 2 > _mapData.GetLength(1)) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (east) -> " + mapViewFocus); }
-        else if (mapViewFocus.y - _mapViewSize / 2 < 0) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (north) -> " + mapViewFocus); }
-        else if (mapViewFocus.y + _mapViewSize / 2 > _mapData.GetLength(0)) { Debug.LogError("Map.cs : Trying to set a map view focus going out of bonds (south) -> " + mapViewFocus); }
-        else {
-            _mapViewFocus = mapViewFocus;
-            DisplayMap();
-        }
+    private void SetMapView(Vector2 mapView) {
+        _mapView = mapView;
+        DisplayMap();
     }
 
     private void DeactivateAllCells() {

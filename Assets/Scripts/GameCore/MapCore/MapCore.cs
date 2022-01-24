@@ -8,7 +8,11 @@ public class MapCore {
 
     public MapCore() {
         _mapGenerator = new MapGenerator();
-        _map = new Map(_mapGenerator.GenerateMap(new Vector2(20, 20)));
+    }
+
+    public Map CreateMap(int w, int h) {
+        _map = new Map(_mapGenerator.GenerateMap(new Vector2(w, h)));
+        return _map;
     }
 
     public Map GetMap() { return _map; }

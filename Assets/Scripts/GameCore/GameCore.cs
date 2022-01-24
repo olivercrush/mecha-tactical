@@ -6,7 +6,13 @@ public class GameCore : MonoBehaviour
 {
     private MapCore _mapCore;
 
-    private void Start() {
-        _mapCore = new MapCore();
+    public void CreateMap(int w, int h) {
+        if (_mapCore == null) _mapCore = new MapCore();
+        _mapCore.CreateMap(w, h);
+    }
+
+    public int[,] GetMapPart(int x1, int y1, int x2, int y2) {
+        return _mapCore.GetMap().GetCellGridPart(x1, y1, x2, y2);
     }
 }
+

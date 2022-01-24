@@ -20,13 +20,13 @@ public class Selector : MonoBehaviour {
         else {
             // ON MAP
             _selectedCell = cell;
-            _selectedCellCoordinates = cell.GetCoordinates();
+            //_selectedCellCoordinates = cell.GetCoordinates();
             ObjectFinder.GetCursor().DeselectCell();
             ShowSelector();
 
             // ON UI
             ObjectFinder.GetUIManager().SetCellTypeText(_selectedCell.GetCellType().GetName());
-            ObjectFinder.GetUIManager().SetCellCoordinates(_selectedCell.GetCoordinates());
+            //ObjectFinder.GetUIManager().SetCellCoordinates(_selectedCell.GetCoordinates());
             ObjectFinder.GetUIManager().SetCellSprite(_selectedCell.GetCellType().GetSprite());
         }
     }

@@ -16,20 +16,19 @@ public class MapCell : Cell {
         ObjectFinder.GetSelector().SelectCell(this);
     }
 
-    public override void Activate(Vector2 position, CellType type) {
-        base.Activate(position, type);
+    public override void SetType(CellType type) {
+        base.SetType(type);
         SpriteRenderer sr = GetSpriteRenderer();
         if (sr != null) {
-            //Debug.Log(_type.GetSprite());
             sr.sprite = _type.GetSprite();
         }
     }
 
     public override void DeselectThisCell() {
-        ObjectFinder.GetCursor().DeselectCell();
+        //ObjectFinder.GetCursor().DeselectCell();
     }
 
     protected override void SelectThisCell() {
-        ObjectFinder.GetCursor().SelectCell(this);
+        //ObjectFinder.GetCursor().SelectCell(this);
     }
 }

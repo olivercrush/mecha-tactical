@@ -19,8 +19,8 @@ public class MapDebugCell : Cell {
         SelectThisCell();
     }
 
-    public override void Activate(Vector2 position, CellType type) {
-        base.Activate(position, type);
+    public override void SetType(CellType type) {
+        base.SetType(type);
         SetCellColor(_type.GetDebugColor());
     }
 
