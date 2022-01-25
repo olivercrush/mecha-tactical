@@ -11,7 +11,7 @@ public class MapGraphics : MonoBehaviour {
     public DisplayType _displayType = DisplayType.PROD;
 
     private float _mapSpeed = 0.5f;
-    private int _mapViewSize = 10;
+    private int _mapViewSize = 20;
     private Vector2 _mapView;
     private Vector2 _mapMovement;
 
@@ -43,6 +43,10 @@ public class MapGraphics : MonoBehaviour {
         }
     }
 
+    private void MoveMap() {
+        SetMapView(_mapView + _mapMovement);
+    }
+
     public void Load() {
         DeleteAllCells();
 
@@ -58,7 +62,7 @@ public class MapGraphics : MonoBehaviour {
         }
 
         _mapMovement = new Vector2(0, 0);
-        SetMapView(new Vector2(5, 5));
+        SetMapView(new Vector2(25, 25));
     }
 
     private void DisplayMap() {
@@ -67,6 +71,7 @@ public class MapGraphics : MonoBehaviour {
         // selector.HideSelector();
 
         int[,] mapParts = GetComponentInParent<GraphicsManager>()._gameCore.GetMapPart((int)_mapView.x - _mapViewSize / 2, (int)_mapView.y - _mapViewSize / 2, (int)_mapView.x + _mapViewSize / 2, (int)_mapView.y + _mapViewSize / 2);
+        Debug.Log(mapParts.GetLength(0));
 
         for (int y = 0; y < mapParts.GetLength(0); y++) {
             for (int x = 0; x < mapParts.GetLength(1); x++) {

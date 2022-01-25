@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class GameCore : MonoBehaviour
 {
+    public float _xOrg;
+    public float _yOrg;
+    public float _scale;
+
     private MapCore _mapCore;
 
     public void CreateMap(int w, int h) {
+        MapGenerator.GetInstance().SetParameters(_xOrg, _yOrg, _scale);
         if (_mapCore == null) _mapCore = new MapCore();
         _mapCore.CreateMap(w, h);
     }

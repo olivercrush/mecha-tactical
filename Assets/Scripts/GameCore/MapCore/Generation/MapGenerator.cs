@@ -3,12 +3,32 @@ using UnityEngine;
 
 public class MapGenerator {
 
+    // SINGLETON PART
+
+    private static MapGenerator _instance;
+    private MapGenerator() { }
+
+    public static MapGenerator GetInstance() {
+        if (_instance == null) {
+            _instance = new MapGenerator();
+        }
+        return _instance;
+    }
+
+    // LOGIC PART
+
     private float _xOrg = 0.0f;
     private float _yOrg = 0.0f;
-    public float _scale = 1.0f;
+    private float _scale = 1.0f;
 
-    public float _riverFilter = 0.4f;
-    public float _forestFilter = 0.5f;
+    private float _riverFilter = 0.2f;
+    private float _forestFilter = 0.55f;
+
+    public void SetParameters(float xOrg, float yOrg, float scale) {
+        _xOrg = xOrg;
+        _yOrg = yOrg;
+        _scale = scale;
+    }
 
     public int[,] GenerateMap(Vector2 size) {
         _xOrg = Random.Range(0.0f, 100.0f);
