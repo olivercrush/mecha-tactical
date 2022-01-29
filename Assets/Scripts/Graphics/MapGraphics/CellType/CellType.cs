@@ -16,11 +16,9 @@ public abstract class CellType : ScriptableObject {
 
     public int GetId() { return _id; }
     public string GetName() { return _name; }
-    public Sprite GetSprite() { 
+    public Sprite GetSprite() {
         if (_sprite == null) {
             _sprite = Resources.Load<Sprite>(_spritePath);
-            //Debug.Log("Loading " + _spritePath);
-            //Debug.Log(_sprite);
         }
         return _sprite; 
     }
