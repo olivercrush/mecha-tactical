@@ -9,10 +9,19 @@ public class MapGraphics : MonoBehaviour {
     private Vector2 _mapView;
     private Vector2 _mapMovement;
 
+    
     private Cell[,] _mapCells;
+    public Cursor _cursor;
+    private Selector _selector;
 
-    void Update() {
+    public void Start() {
+        GameObject cursorObject = new GameObject();
+        cursorObject.transform.SetParent(transform);
+        _cursor = cursorObject.AddComponent<Cursor>();
 
+        /*GameObject selectorObject = new GameObject();
+        selectorObject.transform.SetParent(transform);
+        _selector = selectorObject.AddComponent<Selector>();*/
     }
 
     public void Load() {
@@ -25,12 +34,13 @@ public class MapGraphics : MonoBehaviour {
                 cell.name = "Cell (" + x + ":" + y + ")";
                 _mapCells[y, x] = cell.GetComponent<Cell>();
                 _mapCells[y, x].transform.position = new Vector3(transform.position.x + x, transform.position.y + _mapViewSize - y, 1);
+                _mapCells[y, x].SetCoords(new Vector2(x, y));
             }
         }
 
         _mapMovement = new Vector2(0, 0);
         SetMapView(new Vector2(10, 10));
-    }
+    } 
 
     private void DisplayMap() {
         // Selector selector = ObjectFinder.GetSelector();

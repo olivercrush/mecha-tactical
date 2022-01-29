@@ -3,11 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Cell : MonoBehaviour {
+    private Vector2 _coords;
     private CellType _type;
 
     public CellType GetCellType() { return _type; }
 
-    public virtual void SetType(CellType type) {
+    private void OnMouseEnter() {
+        transform.GetComponentInParent<MapGraphics>()._cursor.SelectCell(this);
+    }
+
+    private void OnMouseExit() {
+        transform.GetComponentInParent<MapGraphics>()._cursor.DeselectCell();
+    }
+
+    public void SetCoords(Vector2 coords) {
+        _coords = coords;
+    }
+
+    public void SetType(CellType type) {
         _type = type;
         if (TryGetComponent<SpriteRenderer>(out SpriteRenderer sr)) {
             sr.sprite = _type.GetSprite();

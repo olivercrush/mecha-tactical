@@ -3,10 +3,16 @@ using UnityEngine;
 
 public class Selector : MonoBehaviour {
 
+    private const string SPRITE_PATH = "Sprites/Selector16x16";
+
     private Cell _selectedCell;
     private Vector2 _selectedCellCoordinates;
 
     void Start() {
+        name = "Selector";
+        SpriteRenderer sr = gameObject.AddComponent<SpriteRenderer>();
+        sr.sprite = Resources.Load<Sprite>(SPRITE_PATH);
+
         _selectedCell = null;
         _selectedCellCoordinates = new Vector2(-1, -1);
         HideSelector();
