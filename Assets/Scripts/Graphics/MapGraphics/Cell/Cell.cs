@@ -16,6 +16,10 @@ public class Cell : MonoBehaviour {
         transform.GetComponentInParent<MapGraphics>()._cursor.DeselectCell();
     }
 
+    private void OnMouseDown() {
+        transform.GetComponentInParent<MapGraphics>()._selector.SelectCell(this);
+    }
+
     public void SetCoords(Vector2 coords) {
         _coords = coords;
     }
@@ -25,13 +29,5 @@ public class Cell : MonoBehaviour {
         if (TryGetComponent<SpriteRenderer>(out SpriteRenderer sr)) {
             sr.sprite = _type.GetSprite();
         }
-    }
-
-    protected void SelectThisCell() {
-
-    }
-
-    public void DeselectThisCell() {
-
     }
 }

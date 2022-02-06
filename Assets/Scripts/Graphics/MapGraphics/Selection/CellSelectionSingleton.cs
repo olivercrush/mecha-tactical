@@ -28,7 +28,7 @@ public class CellSelectionSingleton {
 
     public void DeselectCell() {
         if (_currentSelectedCell != null) {
-            _currentSelectedCell.DeselectThisCell();
+            //_currentSelectedCell.DeselectThisCell();
         }
         ObjectFinder.GetUIManager().SetCellTypeText("");
     }

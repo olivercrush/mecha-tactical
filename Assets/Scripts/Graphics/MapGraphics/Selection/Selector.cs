@@ -7,11 +7,12 @@ public class Selector : MonoBehaviour {
 
     private Cell _selectedCell;
     private Vector2 _selectedCellCoordinates;
+    private SpriteRenderer _sr;
 
     void Start() {
         name = "Selector";
-        SpriteRenderer sr = gameObject.AddComponent<SpriteRenderer>();
-        sr.sprite = Resources.Load<Sprite>(SPRITE_PATH);
+        _sr = gameObject.AddComponent<SpriteRenderer>();
+        _sr.sprite = Resources.Load<Sprite>(SPRITE_PATH);
 
         _selectedCell = null;
         _selectedCellCoordinates = new Vector2(-1, -1);
@@ -21,19 +22,19 @@ public class Selector : MonoBehaviour {
     public void SelectCell(Cell cell) {
         if (cell == _selectedCell) {
             DeselectCell();
-            ObjectFinder.GetCursor().SelectCell(cell);
+            GetComponentInParent<MapGraphics>()._cursor.SelectCell(cell);
         }
         else {
             // ON MAP
             _selectedCell = cell;
             //_selectedCellCoordinates = cell.GetCoordinates();
-            ObjectFinder.GetCursor().DeselectCell();
+            GetComponentInParent<MapGraphics>()._cursor.DeselectCell();
             ShowSelector();
 
             // ON UI
-            ObjectFinder.GetUIManager().SetCellTypeText(_selectedCell.GetCellType().GetName());
-            //ObjectFinder.GetUIManager().SetCellCoordinates(_selectedCell.GetCoordinates());
-            ObjectFinder.GetUIManager().SetCellSprite(_selectedCell.GetCellType().GetSprite());
+            // ObjectFinder.GetUIManager().SetCellTypeText(_selectedCell.GetCellType().GetName());
+            // ObjectFinder.GetUIManager().SetCellCoordinates(_selectedCell.GetCoordinates());
+            // ObjectFinder.GetUIManager().SetCellSprite(_selectedCell.GetCellType().GetSprite());
         }
     }
 
@@ -43,19 +44,19 @@ public class Selector : MonoBehaviour {
         HideSelector();
 
         // ON UI
-        ObjectFinder.GetUIManager().ClearCellSelection();
+        // ObjectFinder.GetUIManager().ClearCellSelection();
     }
 
     public void ShowSelector() {
         if (_selectedCell != null) {
             transform.position = _selectedCell.transform.position;
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-            GetComponent<SpriteRenderer>().enabled = true;
+            transform.position = new Vector3(transform.position.x, transform.position.y, -1);
+            _sr.enabled = true;
         }
     }
 
     public void HideSelector() {
-        GetComponent<SpriteRenderer>().enabled = false;
+        _sr.enabled = false;
     }
 
     public Cell GetSelectedCell() { return _selectedCell; }

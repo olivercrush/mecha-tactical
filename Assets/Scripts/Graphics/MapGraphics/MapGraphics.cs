@@ -11,16 +11,16 @@ public class MapGraphics : MonoBehaviour {
     
     private Cell[,] _mapCells;
     public Cursor _cursor;
-    private Selector _selector;
+    public Selector _selector;
 
     public void Start() {
         GameObject cursorObject = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Cursor"));
         cursorObject.transform.SetParent(transform);
         _cursor = cursorObject.GetComponent<Cursor>();
 
-        /*GameObject selectorObject = new GameObject();
+        GameObject selectorObject = new GameObject();
         selectorObject.transform.SetParent(transform);
-        _selector = selectorObject.AddComponent<Selector>();*/
+        _selector = selectorObject.AddComponent<Selector>();
     }
 
     public void Load() {
@@ -42,10 +42,6 @@ public class MapGraphics : MonoBehaviour {
     } 
 
     private void DisplayMap() {
-        // Selector selector = ObjectFinder.GetSelector();
-        // Vector2 selectedCellCoordinates = selector.GetSelectedCellCoordinates();
-        // selector.HideSelector();
-
         int[,] mapParts = GetComponentInParent<GraphicsManager>()._gameCore.GetMap();
 
         for (int y = 0; y < mapParts.GetLength(0); y++) {
