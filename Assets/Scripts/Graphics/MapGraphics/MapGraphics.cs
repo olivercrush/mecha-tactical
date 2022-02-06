@@ -8,16 +8,15 @@ public class MapGraphics : MonoBehaviour {
     private int _mapViewSize = 20;
     private Vector2 _mapView;
     private Vector2 _mapMovement;
-
     
     private Cell[,] _mapCells;
     public Cursor _cursor;
     private Selector _selector;
 
     public void Start() {
-        GameObject cursorObject = new GameObject();
+        GameObject cursorObject = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Cursor"));
         cursorObject.transform.SetParent(transform);
-        _cursor = cursorObject.AddComponent<Cursor>();
+        _cursor = cursorObject.GetComponent<Cursor>();
 
         /*GameObject selectorObject = new GameObject();
         selectorObject.transform.SetParent(transform);
