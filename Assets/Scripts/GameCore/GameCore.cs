@@ -9,6 +9,17 @@ public class GameCore : MonoBehaviour
     public float _scale;
 
     private MapCore _mapCore;
+    private EntityCore _entityCore;
+
+    private void Start() {
+        _mapCore = new MapCore();
+        _entityCore = new EntityCore();
+    }
+
+    public void PropagateUpdate(Update update) {
+        _mapCore.HandleUpdate(update);
+        _entityCore.HandleUpdate(update);
+    }
 
     public void CreateMap(int w, int h) {
         MapGenerator.GetInstance().SetParameters(_xOrg, _yOrg, _scale);

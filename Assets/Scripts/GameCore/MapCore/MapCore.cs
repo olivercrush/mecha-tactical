@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class MapCore {
+public class MapCore : GameplayCore {
 
     private Map _map;
 
@@ -16,4 +16,10 @@ public class MapCore {
 
     public Map GetMap() { return _map; }
 
+    public void HandleUpdate(Update update) {
+
+
+
+        Debug.LogError("Not implemented yet");
+    }
 }
