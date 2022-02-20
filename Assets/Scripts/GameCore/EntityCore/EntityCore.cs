@@ -25,6 +25,6 @@ public class EntityCore : GameplayCore {
     }
 
     public void HandleUpdate(Update update) {
-        Debug.LogError("Not implemented yet");
+        
     }
 }

@@ -17,9 +17,10 @@ public class MapCore : GameplayCore {
     public Map GetMap() { return _map; }
 
     public void HandleUpdate(Update update) {
-
-
-
-        Debug.LogError("Not implemented yet");
+        switch (update.GetUpdateType()) {
+            case UpdateType.GENERATE_MAP:
+                CreateMap(int.Parse(update.GetArgs()[0]), int.Parse(update.GetArgs()[1]));
+                break;
+        }
     }
 }

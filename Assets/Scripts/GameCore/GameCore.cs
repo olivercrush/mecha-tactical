@@ -12,6 +12,7 @@ public class GameCore : MonoBehaviour
     private EntityCore _entityCore;
 
     private void Start() {
+        MapGenerator.GetInstance().SetParameters(_xOrg, _yOrg, _scale);
         _mapCore = new MapCore();
         _entityCore = new EntityCore();
     }
