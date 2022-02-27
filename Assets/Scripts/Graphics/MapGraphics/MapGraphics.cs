@@ -9,7 +9,7 @@ public class MapGraphics : MonoBehaviour {
     private Vector2 _mapView;
     private Vector2 _mapMovement;
     
-    private Cell[,] _mapCells;
+    private CellGraphics[,] _mapCells;
     public Cursor _cursor;
     public Selector _selector;
 
@@ -25,13 +25,13 @@ public class MapGraphics : MonoBehaviour {
 
     public void Load() {
         DeleteAllCells();
-        _mapCells = new Cell[_mapViewSize, _mapViewSize];
+        _mapCells = new CellGraphics[_mapViewSize, _mapViewSize];
 
         for (int y = 0; y < _mapCells.GetLength(0); y++) {
             for (int x = 0; x < _mapCells.GetLength(1); x++) {
-                GameObject cell = CellPrefabFactory.GetInstance().CreateMapCell(transform);
+                GameObject cell = CellGraphicsPrefabFactory.GetInstance().CreateMapCell(transform);
                 cell.name = "Cell (" + x + ":" + y + ")";
-                _mapCells[y, x] = cell.GetComponent<Cell>();
+                _mapCells[y, x] = cell.GetComponent<CellGraphics>();
                 _mapCells[y, x].transform.position = new Vector3(transform.position.x + x, transform.position.y + _mapViewSize - y, 1);
                 _mapCells[y, x].SetCoords(new Vector2(x, y));
             }
@@ -68,9 +68,9 @@ public class MapGraphics : MonoBehaviour {
     }
 
     private static class CellTypeHolder {
-        private static CellPlain CELL_PLAIN = ScriptableObject.CreateInstance<CellPlain>();
-        private static CellForest CELL_FOREST = ScriptableObject.CreateInstance<CellForest>();
-        private static CellWater CELL_WATER = ScriptableObject.CreateInstance<CellWater>();
+        private static CellTypePlain CELL_PLAIN = ScriptableObject.CreateInstance<CellTypePlain>();
+        private static CellTypeForest CELL_FOREST = ScriptableObject.CreateInstance<CellTypeForest>();
+        private static CellTypeWater CELL_WATER = ScriptableObject.CreateInstance<CellTypeWater>();
 
         public static CellType GetCellTypeInstance(int cellType) {
             switch (cellType) {

@@ -6,14 +6,12 @@ public class EntityCore : GameplayCore {
 
     private List<Entity> _entities;
 
-    public EntityCore() { }
+    public EntityCore() { 
+        _entities = new List<Entity>(); 
+    }
 
     public List<Entity> GetEntities() { 
         return _entities; 
-    }
-
-    public void AddEntity(Entity entity) {
-        _entities.Add(entity);
     }
 
     public Entity GetEntityAtPosition(Vector2 position) {
@@ -25,6 +23,10 @@ public class EntityCore : GameplayCore {
     }
 
     public void HandleUpdate(Update update) {
-        
+        switch (update.GetUpdateType()) {
+            case UpdateType.SPAWN_BUILDING:
+                _entities.Add(new Building(update.GetOrigin(), PlayerColor.RED));
+                break;
+        }
     }
 }

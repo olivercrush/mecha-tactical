@@ -1,28 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CellPrefabFactory {
+public class CellGraphicsPrefabFactory {
     // SINGLETON PART
-    private CellPrefabFactory() {
-        _cellPlain = ScriptableObject.CreateInstance<CellPlain>();
-        _cellForest = ScriptableObject.CreateInstance<CellForest>();
-        _cellWater = ScriptableObject.CreateInstance<CellWater>();
+    private CellGraphicsPrefabFactory() {
+        _cellPlain = ScriptableObject.CreateInstance<CellTypePlain>();
+        _cellForest = ScriptableObject.CreateInstance<CellTypeForest>();
+        _cellWater = ScriptableObject.CreateInstance<CellTypeWater>();
     }
 
-    private static CellPrefabFactory _instance;
+    private static CellGraphicsPrefabFactory _instance;
 
-    public static CellPrefabFactory GetInstance() {
+    public static CellGraphicsPrefabFactory GetInstance() {
         if (_instance == null) {
-            _instance = new CellPrefabFactory();
+            _instance = new CellGraphicsPrefabFactory();
         }
         return _instance;
     }
 
     // LOGIC PART
-    private CellPlain _cellPlain;
-    private CellForest _cellForest;
-    private CellWater _cellWater;
+    private CellTypePlain _cellPlain;
+    private CellTypeForest _cellForest;
+    private CellTypeWater _cellWater;
 
     public GameObject CreateMapCell(Transform parent) {
         GameObject prefab = Resources.Load<GameObject>("Prefabs/MapCell");

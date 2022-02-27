@@ -10,7 +10,7 @@ public abstract class Entity : MonoBehaviour
     public Vector2 GetCoordinates() { return _coordinates; }
     public PlayerColor GetColor() { return _color; }
 
-    public virtual void Spawn(Vector2 coordinates, PlayerColor color) {
+    protected Entity(Vector2 coordinates, PlayerColor color) {
         _coordinates = coordinates;
         _color = color;
     }

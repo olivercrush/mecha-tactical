@@ -16,9 +16,9 @@ public class CellSelectionSingleton {
     }
 
     // LOGIC PART
-    private Cell _currentSelectedCell;
+    private EntityGraphics _currentSelectedCell;
 
-    public void SelectCell(Cell cell) {
+    public void SelectCell(EntityGraphics cell) {
         DeselectCell();
         if (_currentSelectedCell != cell) {
             _currentSelectedCell = cell;
@@ -33,5 +33,5 @@ public class CellSelectionSingleton {
         ObjectFinder.GetUIManager().SetCellTypeText("");
     }
 
-    public Cell GetCurrentSelectedCell() { return _currentSelectedCell; }
+    public EntityGraphics GetCurrentSelectedCell() { return _currentSelectedCell; }
 }

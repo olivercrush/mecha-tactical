@@ -5,7 +5,7 @@ public class Selector : MonoBehaviour {
 
     private const string SPRITE_PATH = "Sprites/Selector16x16";
 
-    private Cell _selectedCell;
+    private CellGraphics _selectedCell;
     private Vector2 _selectedCellCoordinates;
     private SpriteRenderer _sr;
 
@@ -19,7 +19,7 @@ public class Selector : MonoBehaviour {
         HideSelector();
     }
 
-    public void SelectCell(Cell cell) {
+    public void SelectCell(CellGraphics cell) {
         if (cell == _selectedCell) {
             DeselectCell();
             GetComponentInParent<MapGraphics>()._cursor.SelectCell(cell);
@@ -59,7 +59,7 @@ public class Selector : MonoBehaviour {
         _sr.enabled = false;
     }
 
-    public Cell GetSelectedCell() { return _selectedCell; }
+    public CellGraphics GetSelectedCell() { return _selectedCell; }
 
     public Vector2 GetSelectedCellCoordinates() { return _selectedCellCoordinates; }
 }

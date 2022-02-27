@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cell : MonoBehaviour {
+public class CellGraphics : MonoBehaviour {
     private Vector2 _coords;
     private CellType _type;
 

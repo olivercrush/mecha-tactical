@@ -11,7 +11,7 @@ public class Cursor : MonoBehaviour {
         _sr.enabled = false;
     }
 
-    public void SelectCell(Cell cell) {
+    public void SelectCell(CellGraphics cell) {
         if (GetComponentInParent<MapGraphics>()._selector.GetSelectedCell() == cell) {
             DeselectCell();
             return;

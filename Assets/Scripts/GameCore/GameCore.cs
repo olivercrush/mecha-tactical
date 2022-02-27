@@ -28,12 +28,12 @@ public class GameCore : MonoBehaviour
         _mapCore.CreateMap(w, h);
     }
 
-    public int[,] GetMapPart(int x1, int y1, int x2, int y2) {
-        return _mapCore.GetMap().GetCellGridPart(x1, y1, x2, y2);
-    }
-
     public int[,] GetMap() {
         return _mapCore.GetMap().GetCellGrid();
+    }
+
+    public List<Entity> GetEntities() {
+        return _entityCore.GetEntities();
     }
 }
 
