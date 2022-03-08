@@ -43,12 +43,21 @@ public class MapGraphics : MonoBehaviour {
 
     private void DisplayMap() {
         int[,] mapParts = GetComponentInParent<GraphicsManager>()._gameCore.GetMap();
+        List<Entity> entities = GetComponentInParent<GraphicsManager>()._gameCore.GetEntities();
 
         for (int y = 0; y < mapParts.GetLength(0); y++) {
             for (int x = 0; x < mapParts.GetLength(1); x++) {
 
                 _mapCells[y, x].SetType(CellTypeHolder.GetCellTypeInstance(mapParts[y, x]));
 
+                foreach (Entity e in entities) {
+                    Vector2 entityCoords = e.GetCoordinates();
+                    if (entityCoords.x == x && entityCoords.y == y) {
+                        GameObject entity = EntityGraphicsPrefabFactory.GetInstance().CreateEntity(transform, 0, e.GetColor());
+                        //entity.GetComponent<SpriteRenderer>().color = Color.red;
+                        entity.transform.position = entityCoords;
+                    }
+                }
                 /*if (x == selectedCellCoordinates.x && y == selectedCellCoordinates.y) {
                     selector.ShowSelector();
                 }*/

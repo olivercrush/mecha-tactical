@@ -25,8 +25,22 @@ public class EntityCore : GameplayCore {
     public void HandleUpdate(Update update) {
         switch (update.GetUpdateType()) {
             case UpdateType.SPAWN_BUILDING:
-                _entities.Add(new Building(update.GetOrigin(), PlayerColor.RED));
+                _entities.Add(new Building(update.GetOrigin(), GetPlayerColorFromArgs(int.Parse(update.GetArgs()[1]))));
                 break;
+        }
+    }
+
+    // TODO : create a Update -> Entity translator
+    private PlayerColor GetPlayerColorFromArgs(int playerColor) {
+        switch (playerColor) {
+            case 1:
+                return PlayerColor.RED;
+
+            case 2:
+                return PlayerColor.BLUE;
+
+            default:
+                return PlayerColor.WHITE;
         }
     }
 }

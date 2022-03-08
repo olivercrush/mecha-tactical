@@ -19,10 +19,14 @@ public class EntityGraphicsPrefabFactory {
     // LOGIC PART
     private EntityTypeDebug _entityTypeDebug;
 
-    public GameObject CreateEntity(Transform parent, int type) {
+    public GameObject CreateEntity(Transform parent, int type, PlayerColor color) {
         GameObject prefab = Resources.Load<GameObject>("Prefabs/Entity");
         GameObject entity = GameObject.Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity, parent);
-        entity.GetComponent<EntityGraphics>().SetType(GetEntityType(type));
+        
+        EntityGraphics entityGraphics = entity.GetComponent<EntityGraphics>();
+        entityGraphics.SetType(GetEntityType(type));
+        entityGraphics.SetPlayerColor(color);
+
         return entity;
     }
 

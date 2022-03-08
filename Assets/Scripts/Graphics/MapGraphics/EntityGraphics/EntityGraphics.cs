@@ -4,13 +4,29 @@ using UnityEngine;
 
 public class EntityGraphics : MonoBehaviour {
 
-    private Vector2 _coords;
     private EntityType _type;
+    private PlayerColor _color;
 
     public EntityType GetCellType() { return _type; }
 
-    public void SetCoords(Vector2 coords) {
-        _coords = coords;
+    public void SetPlayerColor(PlayerColor color) {
+        _color = color;
+
+        if (TryGetComponent<SpriteRenderer>(out SpriteRenderer sr)) {
+            switch (_color) {
+                case PlayerColor.RED:
+                    sr.color = Color.red;
+                    break;
+
+                case PlayerColor.BLUE:
+                    sr.color = Color.blue;
+                    break;
+
+                default:
+                    sr.color = Color.white;
+                    break;
+            }
+        }
     }
 
     public void SetType(EntityType type) {

@@ -13,7 +13,7 @@ public class GraphicsManager : MonoBehaviour {
     private void Start() {
         _coreUpdateReceiver = new CoreUpdateReceiver(_gameCore);
         _coreUpdateReceiver.ReceiveGameUpdate(CoreUpdateFactory.CreateGenerateMapUpdate((int) _mapDimensions.x, (int) _mapDimensions.y));
-        _coreUpdateReceiver.ReceiveGameUpdate(CoreUpdateFactory.CreateSpawnBuildingUpdate(5, 5, 0));
+        _coreUpdateReceiver.ReceiveGameUpdate(CoreUpdateFactory.CreateSpawnBuildingUpdate(10, 10, 0, 2));
 
         GameObject mapGraphicsGameObject = new GameObject("MapGraphics");
         mapGraphicsGameObject.transform.SetParent(transform);
